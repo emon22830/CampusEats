@@ -24,7 +24,7 @@ return function (App $app): void {
 
     $app->get('/', function ($request, $response) {
         return Response::ok($response, [
-            'message' => 'CampusEats API is running.',
+            'message' => 'CampusEats Backend is running.',
             'status' => 'ok',
         ]);
     });
