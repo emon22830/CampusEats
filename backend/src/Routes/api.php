@@ -10,6 +10,7 @@ use App\Controllers\ReviewController;
 use App\Controllers\VendorController;
 use App\Middleware\JwtAuthMiddleware;
 use App\Middleware\RoleMiddleware;
+use App\Support\Response;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\App;
 
@@ -20,6 +21,13 @@ return function (App $app): void {
     // so JwtAuthMiddleware (populates user_id/user_role) must be added after
     // RoleMiddleware (which reads those attributes) for each protected route.
     $role = static fn (array $roles) => new RoleMiddleware($roles, $responseFactory);
+
+    $app->get('/', function ($request, $response) {
+        return Response::ok($response, [
+            'message' => 'CampusEats API is running.',
+            'status' => 'ok',
+        ]);
+    });
 
     $app->group('/api/auth', function ($group) {
         $group->post('/register', [AuthController::class, 'register']);
