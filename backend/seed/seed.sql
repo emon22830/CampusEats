@@ -4,6 +4,9 @@ INSERT INTO users (id, name, email, password_hash, role) VALUES
     (2, 'Kak Lah', 'vendor@campuseats.test', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'vendor'),
     (3, 'Ali Student', 'customer@campuseats.test', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'customer');
 
+INSERT INTO users (name, email, password_hash, role) VALUES
+    ('Test User', 'test@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer');
+
 INSERT INTO vendors (id, owner_id, name, location, opening_hours, image_url, prep_time_mins, is_active, status) VALUES
     (1, 2, 'Kak Lah Nasi Lemak', 'UTM Arkib - Counter B, Stall 7', '8:00 AM - 4:00 PM', '/images/kak_lah.jpg', 15, 1, 'approved');
 
