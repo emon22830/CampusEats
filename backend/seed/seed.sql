@@ -9,9 +9,9 @@ INSERT INTO users (name, email, password_hash, role) VALUES
 
 -- Team accounts, password: password123
 INSERT INTO users (name, email, password_hash, role) VALUES
-    ('Ahmat', 'ahmat@campuseats.test', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'customer'),
-    ('Muaz Ahmed', 'muaz@campuseats.test', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'customer'),
-    ('Hisham', 'hisham@campuseats.test', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'customer');
+    ('Ahmat', 'ahmat@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'admin'),
+    ('Muaz Ahmed', 'muaz@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'vendor'),
+    ('Hisham', 'hisham@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$eFJuYkRvLmZEZ1VhQTQwQQ$G6pPXcmk1caLvV5S0/ywR4SXt85YpG4MLe/RNV9IQWM', 'customer');
 
 INSERT INTO vendors (id, owner_id, name, location, opening_hours, image_url, prep_time_mins, is_active, status) VALUES
     (1, 2, 'Kak Lah Nasi Lemak', 'UTM Arkib - Counter B, Stall 7', '8:00 AM - 4:00 PM', '/images/kak_lah.jpg', 15, 1, 'approved');
