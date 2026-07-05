@@ -1,50 +1,33 @@
+# NOTE: campuseats-backend was created manually in the Render dashboard
+# (not via "New > Blueprint"), so this file isn't actively driving the live
+# deployment. It's kept as documentation of the intended config - env vars
+# marked `sync: false` are set by hand in the dashboard and won't be
+# overwritten if this blueprint is ever applied.
+#
+# Database: free-tier managed MySQL on Aiven (aiven.io), not Render - Render
+# has no free managed MySQL and private services cost $7/mo minimum even on
+# the cheapest plan. See backend/certs/ for the Aiven CA cert required for
+# the SSL connection (see src/Database/Connection.php).
 services:
-  - name: campuseats-mysql
-    type: pserv
-    runtime: image
-    plan: starter
-    image:
-      url: docker.io/library/mysql:8.0
-    disk:
-      name: campuseats-mysql-data
-      mountPath: /var/lib/mysql
-      sizeGB: 10
-    envVars:
-      - key: MYSQL_DATABASE
-        value: campuseats
-      - key: MYSQL_USER
-        value: campuseats
-      - key: MYSQL_PASSWORD
-        generateValue: true
-      - key: MYSQL_ROOT_PASSWORD
-        generateValue: true
-
   - name: campuseats-backend
     type: web
     runtime: docker
-    plan: starter
+    plan: free
     rootDir: backend
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DB_HOST
-        fromService:
-          name: campuseats-mysql
-          type: pserv
-          property: host
+        sync: false
       - key: DB_PORT
-        fromService:
-          name: campuseats-mysql
-          type: pserv
-          property: port
+        sync: false
       - key: DB_NAME
-        value: campuseats
+        sync: false
       - key: DB_USER
-        value: campuseats
+        sync: false
       - key: DB_PASS
-        fromService:
-          name: campuseats-mysql
-          type: pserv
-          envVarKey: MYSQL_PASSWORD
+        sync: false
+      - key: DB_SSL_CA
+        value: /var/www/html/certs/aiven-ca.pem
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_TTL
@@ -52,6 +35,4 @@ services:
       - key: APP_ENV
         value: production
       - key: CORS_ORIGIN
-        # Placeholder - update to the real Vercel URL once the frontend is deployed,
-        # then redeploy this service. Don't leave this as "*" in production.
-        value: "*"
+        sync: false

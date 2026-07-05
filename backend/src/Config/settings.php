@@ -16,6 +16,7 @@ return [
         'name' => $env('DB_NAME', 'campuseats'),
         'user' => $env('DB_USER', 'campuseats'),
         'pass' => $env('DB_PASS', 'campuseats'),
+        'ssl_ca' => $env('DB_SSL_CA'),
     ],
     'jwt' => [
         'secret' => $env('JWT_SECRET', ''),
