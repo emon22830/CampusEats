@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "sync": "npm --prefix ../CampusEats-frontend-dev/frontend run build:mobile && npx cap sync",
+    "sync": "npm --prefix ../frontend run build:mobile && npx cap sync",
     "open:ios": "npx cap open ios",
     "open:android": "npx cap open android",
     "run:ios": "npx cap run ios",

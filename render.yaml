@@ -23,7 +23,7 @@ services:
     type: web
     runtime: docker
     plan: starter
-    rootDir: CampusEats-backend-dev/backend
+    rootDir: backend
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DB_HOST
