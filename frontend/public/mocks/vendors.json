@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "Kak Lah Nasi Lemak",
+    "location": "UTM Arkib - Counter B, Stall 7",
+    "rating": 4.8,
+    "status": "Open",
+    "prep_time_mins": 15,
+    "image_url": "/images/kak_lah.jpg"
+  }
+]
