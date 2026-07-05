@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: campuseats-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: campuseats
+      MYSQL_USER: campuseats
+      MYSQL_PASSWORD: campuseats
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./migrations:/sql-source/migrations
+      - ./seed:/sql-source/seed
+      - ./docker/init-db.sh:/docker-entrypoint-initdb.d/10-init-db.sh
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: campuseats-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  backend:
+    build: .
+    container_name: campuseats-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: campuseats
+      DB_USER: campuseats
+      DB_PASS: campuseats
+      JWT_SECRET: bcbdbec763c6a3954acbb0139bf94de9a0765f10b6fb4354f11e80bc08486eb5
+      JWT_TTL: 86400
+      APP_ENV: local
+      CORS_ORIGIN: '*'
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
