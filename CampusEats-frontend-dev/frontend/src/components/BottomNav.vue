@@ -8,14 +8,12 @@ import { useNotificationCount } from '@/composables/useNotificationCount'
 const route = useRoute()
 const auth = useAuthStore()
 const cart = useCartStore()
-const { notificationCount, refresh: refreshNotificationCount } = useNotificationCount()
+const { refresh: refreshNotificationCount } = useNotificationCount()
 
 watch(() => [auth.isAuthenticated, route.fullPath], refreshNotificationCount, { immediate: true })
 
-// Vendors and admins get a top-right header bell instead of a bottom-nav
-// slot for alerts, since their dashboard is a single section — Dashboard and
-// Account are the only two tabs they actually need. Customers have more
-// sections to jump between, so Alerts earns its own tab there.
+// Every role gets a top-right header bell for alerts now, so the bottom nav
+// only carries the sections actually navigated between.
 const items = computed(() => {
   if (!auth.isAuthenticated) {
     return [
@@ -41,7 +39,6 @@ const items = computed(() => {
   return [
     { to: '/vendors', match: ['vendors', 'vendor-menu'], icon: '🏪', label: 'Vendors' },
     { to: '/orders', match: ['orders'], icon: '📋', label: 'Orders' },
-    { to: '/notifications', match: ['notifications'], icon: '🔔', label: 'Alerts', badge: notificationCount.value },
     { to: '/checkout', match: ['checkout', 'order-success'], icon: '🛒', label: 'Cart', badge: cart.totalCount },
     { to: '/account', match: ['account'], icon: '👤', label: 'Account' },
   ]

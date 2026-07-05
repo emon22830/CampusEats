@@ -9,12 +9,10 @@ const auth = useAuthStore()
 const router = useRouter()
 const { notificationCount, refresh: refreshNotificationCount } = useNotificationCount()
 
-// Vendors and admins have a single dashboard section, so a bottom-nav slot
-// for alerts would be overkill — it lives in the header instead, the more
-// conventional spot for a dashboard-style interface. Customers already have
-// it as a bottom tab (more sections to navigate between), so it's not
-// duplicated here for them.
-const showHeaderBell = computed(() => auth.role === 'vendor' || auth.role === 'admin')
+// Top-right header bell for every authenticated role (customer, vendor,
+// admin) — the conventional spot for alerts across dashboard and consumer
+// apps alike.
+const showHeaderBell = computed(() => auth.isAuthenticated)
 
 watch(() => [auth.isAuthenticated, auth.role], refreshNotificationCount, { immediate: true })
 
@@ -113,7 +111,7 @@ header {
 .notification-btn {
   position: relative;
   display: inline-flex;
-  color: var(--color-text-secondary);
+  color: var(--color-primary);
   line-height: 1;
   text-decoration: none;
   transition: color 0.15s ease;
