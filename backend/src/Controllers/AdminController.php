@@ -97,7 +97,7 @@ class AdminController
         $stmt = $this->db->query(
             'SELECT v.id AS vendor_id, v.name AS vendor_name,
                     COUNT(o.id) AS order_count,
-                    COALESCE(SUM(CASE WHEN o.status = "collected" THEN o.total ELSE 0 END), 0) AS revenue
+                    COALESCE(SUM(CASE WHEN o.status = \'collected\' THEN o.total ELSE 0 END), 0) AS revenue
              FROM vendors v
              LEFT JOIN orders o ON o.vendor_id = v.id
              GROUP BY v.id
