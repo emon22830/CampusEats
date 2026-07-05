@@ -14,6 +14,45 @@ approve vendor signups.
 - `backend/` — PHP 8.1+ Slim API (JWT auth, MySQL via Docker Compose)
 - `mobile_app/` — Capacitor shell (iOS/Android native projects) wrapping the frontend's build output
 
+## Deployment (live, since 2026-07-05)
+- **Backend**: Render web service (Docker runtime, `rootDir: backend`), auto-deploys
+  from the `main` branch on push. Live at
+  `https://campuseats-backend-fwwt.onrender.com`. On Render's free plan — no
+  paid features (e.g. the Shell tab) are available.
+- **Database**: Aiven free-tier managed MySQL — **not** Render, which has no
+  free managed MySQL and charges $7/mo minimum for the private-service
+  workaround. Aiven requires a verified SSL connection: `DB_SSL_CA` env var
+  points at `backend/certs/aiven-ca.pem` (committed — CA certs are public,
+  not secret), consumed by `PDO::MYSQL_ATTR_SSL_CA` in
+  `src/Database/Connection.php`.
+- **Frontend**: Vercel, root directory `frontend/`, framework auto-detected
+  as Vite. Live at `https://campus-eats-eight.vercel.app/`.
+  `frontend/vercel.json` has the SPA rewrite (`/(.*)` → `/index.html`)
+  required for Vue Router's `history` mode — without it, refreshing any
+  non-root route 404s.
+- `render.yaml` at the repo root documents the intended backend config, but
+  isn't actively synced — the Render service was created manually via the
+  dashboard rather than through "New > Blueprint", so env vars are set by
+  hand there (`DB_HOST/PORT/NAME/USER/PASS`, `CORS_ORIGIN`).
+- **Gotcha**: `CORS_ORIGIN` must match the browser's `Origin` header
+  *exactly* — no trailing slash. Setting it to
+  `https://campus-eats-eight.vercel.app/` (with slash) silently broke every
+  request: the browser blocks CORS-mismatched responses at the network
+  level, which surfaces in the frontend as "Could not reach the server."
+  (`client.js`'s catch-all for a thrown `fetch()`), not as an HTTP error —
+  easy to mistake for the backend being down.
+- **Running migrations**: since Render's Shell tab needs a paid plan, and
+  Aiven is reachable over the public internet anyway, run
+  `bin/migrate.php` **locally** against the live DB instead:
+  ```
+  cd backend
+  DB_HOST=<aiven-host> DB_PORT=<aiven-port> DB_NAME=defaultdb \
+  DB_USER=avnadmin DB_PASS=<aiven-password> \
+  DB_SSL_CA="$(pwd)/certs/aiven-ca.pem" php bin/migrate.php
+  ```
+  Never pass `--seed` in production — `seed/seed.sql` has demo accounts with
+  a publicly-known password (`password123`).
+
 ## Backend (local dev)
 ```
 cd backend
